@@ -2,6 +2,42 @@
 
 const baseUrl= "https://www.thecocktaildb.com/api/json/v1/1/";
 
+//generate welcome page
+// function generateWelcomePage(){
+//   return `
+//   <section class="welcome-page">
+//     <div class="start-screen">
+//     <form class="js-enter">
+//      <h2>Be Your Own Bartender</h2>
+//       <p>Find a Drink Recipe</p>
+//     <div class="button-container">
+//       <button type="submit">Show Me The Drinks</button>
+//     </div>
+//     </form>
+//   </section>
+//   `
+// }
+
+//generate search page
+function generateSearchPage(){
+  console.log('generate search page is running');
+  $('main').html(`<form class="js-form">
+        <h2>Search for Drink Recipes By Ingredient</h2>
+        <input type="text" class="booze-input" placeholder="Vodka" required>
+        </br>
+        <div class="buttons">
+          <input type="submit" class="js-find-drinks" value="Find Drinks!">
+        </div>
+      </form>
+      <form class="js-random-form">
+        <h3>Find a Random Drink</h3>
+        <div class="buttons">
+          <input type="button" id="js-random-button" class="js-random-button" value="Random Drink">
+        </div>
+      </form>
+    </section>`);
+}
+
 //generate's a random drink w/ photo and instructions
 function getRandomCocktail(){
   const urlRandom = baseUrl + 'random.php'
@@ -19,21 +55,34 @@ function getRandomCocktail(){
   });
 }
 
-function displayRandomCocktail(){  
-  $('main').html(
-    `<h3>${responseJson.drinks.strDrink}</h3>`
-  )
+// function displayRandomCocktail(){  
+//   $('main').html(
+//     `<h3>${responseJson.drinks.strDrink}</h3>`
+//   )
 
-}
+// }
 
-//generate's list of cocktails containing specified ingredient
+//generate's list of cocktails containing specified ingredient & corresponding image
 function getCocktailList(boozeInput){
   
-  //
+  const urlSpecified = baseUrl + 'i=' + 'vodka';
+
+  fetch(urlSpecified)
+  .then(response => {
+    if(response.ok) {
+      return response.json();
+    }
+    throw new Error(response.statusText);
+  })  
+  .then(responseJson => console.log(responseJson))
+  .catch(err => {
+    $('.js-error-message').text('Something went wrong');
+  });
 }
 
+
 //handles the random drink button
-function randomDrinkButton(){
+function handleRandomDrinkButton(){
   console.log ('randomDrinkButton is working');
   $('.js-random-button').on('click', event => {
     console.log('random drink button clicked')
@@ -42,7 +91,7 @@ function randomDrinkButton(){
 }
 
 //handles the find a drink button
-function findDrinkButton(){
+function handleFindDrinkButton(){
   console.log('findDrinkButton is working');
     $('.js-form').submit(event => {
       event.preventDefault();
@@ -52,5 +101,18 @@ function findDrinkButton(){
     })
   }
 
-$(randomDrinkButton);
-$(findDrinkButton);
+// function handleEnterButton(){
+//   console.log('handleEnterButton is working');
+//   $('.js-enter').submit(event => {
+//     console.log('enter button clicked')
+//     generateSearchPage();    
+//   })
+// }
+
+function handleCocktailApp(){
+    generateSearchPage();
+    handleRandomDrinkButton();
+    handleFindDrinkButton();
+}
+
+handleCocktailApp();
