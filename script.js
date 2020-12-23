@@ -61,7 +61,7 @@ function displayRandomCocktail(responseJson){
   
   for (let i = 0; i < responseJson.drinks.length; i++){
     $('.results').append(`
-    <div class="random-drink">
+    <div class="drink-display">
       <h3>${responseJson.drinks[i].strDrink}</h3>
       <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
       <p>${responseJson.drinks[i].strInstructions}</p>
@@ -103,7 +103,7 @@ function displaySearchedCocktail(responseJson){
     const idDrink = responseJson.drinks[i].idDrink;
     
       $('.results').append(`
-    <div class="drink-thumb">
+    <div class="drink-display">
       <h3>${responseJson.drinks[i].strDrink}</h3>
       <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
       <p>${getRecipeIngredients(idDrink)}</p>
@@ -147,7 +147,7 @@ function getCocktailList(boozeInput){
   const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
   
 
-  fetch(urlSpecified)
+  fetch(urlSpecified) 
   .then(response => {
     if(response.ok) {
       return response.json();

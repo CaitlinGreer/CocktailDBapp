@@ -1,10 +1,10 @@
-.drink-thumb{
+.drink-display{
     display: flex;
     flex-direction: column;
 }
 
-img {
-    max-width: 70%;
+.drink-display img {
+    max-width: 100%;
     height: auto;
 }
 
@@ -14,4 +14,10 @@ img {
 
 .ingredient-list {
     list-style-type: none;
+}
+
+
+
+@media (min-width: 600px) {
+
 }
