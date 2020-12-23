@@ -1,0 +1,9 @@
+.drink-thumb{
+    display: flex;
+    flex-direction: column;
+}
+
+img {
+    max-width: 70%;
+    height: auto;
+}

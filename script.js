@@ -49,23 +49,47 @@ function getRandomCocktail(){
     }
     throw new Error(response.statusText);
   })  
-  .then(responseJson => console.log(responseJson))
+  .then(responseJson => displayRandomCocktail(responseJson))
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
 }
 
-// function displayRandomCocktail(){  
-//   $('main').html(
-//     `<h3>${responseJson.drinks.strDrink}</h3>`
-//   )
+function displayRandomCocktail(responseJson){  
+  $('.results').empty();
+   
+  for (let i = 0; i < responseJson.drinks.length; i++){
+    $('.results').append(`
+    <div class="drink-thumb">
+      <h3>${responseJson.drinks[i].strDrink}</h3>
+      <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
+    </div>  
+      `);
+       
+  }
+}
 
-// }
+//generate display for search by boozeInput
+function displaySearchedCocktail(responseJson){
+    $('.results').empty();
+   
+
+  for (let i = 0; i < responseJson.drinks.length; i++){
+    $('.results').append(`
+    <div class="drink-thumb">
+      <h3>${responseJson.drinks[i].strDrink}</h3>
+      <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
+    </div>  
+      `);
+       
+  }
+}
 
 //generate's list of cocktails containing specified ingredient & corresponding image
 function getCocktailList(boozeInput){
   
-  const urlSpecified = baseUrl + 'i=' + 'vodka';
+  const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
+  console.log(urlSpecified)
 
   fetch(urlSpecified)
   .then(response => {
@@ -74,11 +98,13 @@ function getCocktailList(boozeInput){
     }
     throw new Error(response.statusText);
   })  
-  .then(responseJson => console.log(responseJson))
+  .then(responseJson => displaySearchedCocktail(responseJson))
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
 }
+
+
 
 
 //handles the random drink button
@@ -96,7 +122,7 @@ function handleFindDrinkButton(){
     $('.js-form').submit(event => {
       event.preventDefault();
       console.log('find drink recipe clicked');
-      const boozeInput = $('booze-input').val();
+      const boozeInput = $('.booze-input').val();
       getCocktailList(boozeInput);
     })
   }
