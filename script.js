@@ -38,7 +38,7 @@ function generateSearchPage(){
     </section>`);
 }
 
-//generate's a random drink w/ photo and instructions
+//fetch call for the url for random cocktail search
 function getRandomCocktail(){
   const urlRandom = baseUrl + 'random.php'
 
@@ -55,41 +55,97 @@ function getRandomCocktail(){
   });
 }
 
+//generates the display for the random cocktail search
 function displayRandomCocktail(responseJson){  
   $('.results').empty();
-   
+  
   for (let i = 0; i < responseJson.drinks.length; i++){
     $('.results').append(`
-    <div class="drink-thumb">
+    <div class="random-drink">
       <h3>${responseJson.drinks[i].strDrink}</h3>
       <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
-    </div>  
+      <p>${responseJson.drinks[i].strInstructions}</p>
+      <p>${getIngredients(responseJson)}</p>
+      </div>  
       `);
-       
-  }
-}
+      }
+    }
 
-//generate display for search by boozeInput
+// Prints the Ingredients and Measurements
+ function getIngredients(responseJson) {
+      let ingredients = [];
+      for(let j = 1; j < 16; j++) {
+        const ingredientMeasure = {};
+        if (responseJson.drinks[0][`strIngredient${j}`] == null || responseJson.drinks[0][`strMeasure${j}`] == null){
+          delete responseJson.drinks[0][`strIngredient${j}`];
+        }
+          else if (responseJson.drinks[0][`strIngredient${j}`] !== '' ) {
+                ingredientMeasure.ingredient = responseJson.drinks[0][`strIngredient${j}`];
+                ingredientMeasure.measure = responseJson.drinks[0][`strMeasure${j}`];
+                ingredients.push(ingredientMeasure);
+           } 
+}
+// Build the template for measurements/ingredients
+      let ingredientsTemplate = '';
+      ingredients.forEach(ingredient => {
+        ingredientsTemplate += `
+          <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+          `;
+      });
+      
+      return ingredientsTemplate;
+  }
+//generate's list of cocktails containing specified ingredient & corresponding image
 function displaySearchedCocktail(responseJson){
     $('.results').empty();
-   
-
-  for (let i = 0; i < responseJson.drinks.length; i++){
-    $('.results').append(`
+    
+    for (let i = 0; i < responseJson.drinks.length; i++){
+    const idDrink = responseJson.drinks[i].idDrink;
+    
+      $('.results').append(`
     <div class="drink-thumb">
       <h3>${responseJson.drinks[i].strDrink}</h3>
       <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
+      <p>${getRecipeIngredients(idDrink)}</p>
     </div>  
       `);
-       
-  }
+   }
 }
 
-//generate's list of cocktails containing specified ingredient & corresponding image
+//
+function getSpecifiedIngredients(responseJson) {
+ 
+  let specifiedIngredients = [];
+  for(let i = 0; i < responseJson.drinks.length; i++){
+  for(let j = 1; j < 16; j++) {
+    const drinkIngredients = {};
+    if (responseJson.drinks[0][`strIngredient${j}`] == null || responseJson.drinks[0][`strMeasure${j}`] == null){
+      delete responseJson.drinks[0][`strIngredient${j}`];
+    }
+      else if (responseJson.drinks[0][`strIngredient${j}`] !== '' ) {
+        drinkIngredients.ingredient = responseJson.drinks[0][`strIngredient${j}`];
+        drinkIngredients.measure = responseJson.drinks[0][`strMeasure${j}`];
+            specifiedIngredients.push(drinkIngredients);
+       } 
+    }
+
+}
+// Build the template for measurements/ingredients
+  let ingredientsTemplate = '';
+  ingredients.forEach(ingredient => {
+    ingredientsTemplate += `
+      <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+      `;
+  });
+  
+  return ingredientsTemplate;
+}
+
+//fetch call for drink containing specified ingredient (only display's drink name and img)
 function getCocktailList(boozeInput){
   
   const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
-  console.log(urlSpecified)
+  
 
   fetch(urlSpecified)
   .then(response => {
@@ -98,7 +154,27 @@ function getCocktailList(boozeInput){
     }
     throw new Error(response.statusText);
   })  
-  .then(responseJson => displaySearchedCocktail(responseJson))
+  .then(responseJson => displaySearchedCocktail(responseJson)
+    .then(responseJson => getSpecifiedIngredients(responseJson)))
+    
+  .catch(err => {
+    $('.js-error-message').text('Something went wrong');
+  });
+}
+
+//fetch call for lookup a drink by id number to find recipe and ingredients for cocktail search by ingredient
+function getRecipeIngredients(idDrink){
+  
+  const urlDrinkId = baseUrl + 'lookup.php?i=' + idDrink;
+
+  fetch(urlDrinkId)
+  .then(response => {
+    if(response.ok) {
+      return response.json();
+    }
+    throw new Error(response.statusText);
+  })  
+  .then(responseJson => getSpecifiedIngredients(responseJson))
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
@@ -106,6 +182,7 @@ function getCocktailList(boozeInput){
 
 
 
+///////handlers/////
 
 //handles the random drink button
 function handleRandomDrinkButton(){
@@ -119,6 +196,7 @@ function handleRandomDrinkButton(){
 //handles the find a drink button
 function handleFindDrinkButton(){
   console.log('findDrinkButton is working');
+
     $('.js-form').submit(event => {
       event.preventDefault();
       console.log('find drink recipe clicked');
