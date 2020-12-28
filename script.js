@@ -105,7 +105,7 @@ function displayRandomCocktail(responseJson){
 
 ///////search by ingredient section/////////
 
-  //fetch call for drink containing specified ingredient (only displays drink name and img and id)
+  //fetch call for drink containing specified ingredient (only gets info drink name and img and id)
 function getCocktailList(boozeInput){
   
   const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
