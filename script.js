@@ -107,39 +107,48 @@ function displayRandomCocktail(responseJson){
 
   //fetch call for drink containing specified ingredient (only gets info drink name and img and id)
 function getCocktailList(boozeInput){
-  
+
   const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
   
   fetch(urlSpecified) 
   .then(response => {
+    
     if(response.ok) {
       return response.json();
     }
     throw new Error(response.statusText);
   })  
   .then(responseJson => displaySearchedCocktail(responseJson))
+
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
+  
 }
 
 //fetch call for lookup a drink by id number to find recipe and ingredients for cocktail search by ingredient
 function getRecipeDetails(idDrink){
   
   const urlDrinkId = baseUrl + 'lookup.php?i=' + idDrink;
+  let drinkInfo = '';
 
   fetch(urlDrinkId)
-  .then(response => {
+  .then(response => { 
+    
     if(response.ok) {
       return response.json();
     }
     throw new Error(response.statusText);
   })  
-  .then(responseJson => getSpecifiedIngredients(responseJson))
+  .then(responseJson => drinkInfo = getSpecifiedIngredients(responseJson))
+  console.log(drinkInfo)
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
-
+// console.log('============')
+// console.log(idDrink);
+// console.log('============')
+return drinkInfo;
 }
 
 //displays list of cocktails containing specified ingredient, corresponding image, ingredients and instructions
@@ -150,13 +159,13 @@ function displaySearchedCocktail(responseJson){
     const idDrink = responseJson.drinks[i].idDrink;
     
       $('.results').append(`
-    <div class="drink-display">
-      <h3>${responseJson.drinks[i].strDrink}</h3>
-      <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
-      <p>${getRecipeDetails(idDrink)}</p>
-    </div>  
+        <div class="drink-display">
+          <h3>${responseJson.drinks[i].strDrink}</h3>
+          <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
+          ${getRecipeDetails(idDrink)}
+        </div>  
       `);
-   }
+    }
  
 }
 
@@ -166,27 +175,29 @@ function getSpecifiedIngredients(responseJson) {
  
   let specifiedIngredients = [];
   for(let i = 0; i < responseJson.drinks.length; i++){
-  for(let j = 1; j < 16; j++) {
-    const drinkIngredients = {};
-    if (responseJson.drinks[i][`strIngredient${j}`] == null || responseJson.drinks[i][`strMeasure${j}`] == null){
-      delete responseJson.drinks[i][`strIngredient${j}`];
+    for(let j = 1; j < 16; j++) {
+      const drinkIngredients = {};
+        if (responseJson.drinks[i][`strIngredient${j}`] == null || responseJson.drinks[i][`strMeasure${j}`] == null){
+          delete responseJson.drinks[i][`strIngredient${j}`];
+        }
+        else if (responseJson.drinks[i][`strIngredient${j}`] !== '' ) {
+          drinkIngredients.name = responseJson.drinks[i].strDrink;
+            drinkIngredients.ingredient = responseJson.drinks[i][`strIngredient${j}`];
+              drinkIngredients.measure = responseJson.drinks[i][`strMeasure${j}`];
+                specifiedIngredients.push(drinkIngredients);
+        } 
     }
-      else if (responseJson.drinks[i][`strIngredient${j}`] !== '' ) {
-        drinkIngredients.ingredient = responseJson.drinks[i][`strIngredient${j}`];
-        drinkIngredients.measure = responseJson.drinks[i][`strMeasure${j}`];
-            specifiedIngredients.push(drinkIngredients);
-       } 
-    }
-console.log(specifiedIngredients);
-}  
+//console.log(specifiedIngredients);
+  }  
 // Build the template for measurements/ingredients
   let searchedIngredients= '';
-  drinkIngredients.forEach(drinkIngredients => {
-      searchedIngredients += `
-      <li class="ingredient-list">${drinkIngredients.measure} ${drinkIngredients.ingredient}</li>
+  specifiedIngredients.forEach(drinkIngredient => {
+    searchedIngredients += `
+      ${drinkIngredient.name} 
+      <li class="ingredient-list">${drinkIngredient.measure} ${drinkIngredient.ingredient}</li>
       `;
   });
-  
+  //console.log(searchedIngredients)
   return searchedIngredients;
 }
 
