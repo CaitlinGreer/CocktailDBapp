@@ -38,6 +38,9 @@ function generateSearchPage(){
     </section>`);
 }
 
+////////random cocktail section////////
+
+
 //fetch call for the url for random cocktail search
 function getRandomCocktail(){
   const urlRandom = baseUrl + 'random.php'
@@ -84,6 +87,7 @@ function displayRandomCocktail(responseJson){
                 ingredientMeasure.measure = responseJson.drinks[0][`strMeasure${j}`];
                 ingredients.push(ingredientMeasure);
            } 
+           
 }
 // Build the template for measurements/ingredients
       let ingredientsTemplate = '';
@@ -95,58 +99,15 @@ function displayRandomCocktail(responseJson){
       
       return ingredientsTemplate;
   }
-//generate's list of cocktails containing specified ingredient & corresponding image
-function displaySearchedCocktail(responseJson){
-    $('.results').empty();
-    
-    for (let i = 0; i < responseJson.drinks.length; i++){
-    const idDrink = responseJson.drinks[i].idDrink;
-    
-      $('.results').append(`
-    <div class="drink-display">
-      <h3>${responseJson.drinks[i].strDrink}</h3>
-      <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
-      <p>${getRecipeIngredients(idDrink)}</p>
-    </div>  
-      `);
-   }
-}
 
-//
-function getSpecifiedIngredients(responseJson) {
- 
-  let specifiedIngredients = [];
-  for(let i = 0; i < responseJson.drinks.length; i++){
-  for(let j = 1; j < 16; j++) {
-    const drinkIngredients = {};
-    if (responseJson.drinks[0][`strIngredient${j}`] == null || responseJson.drinks[0][`strMeasure${j}`] == null){
-      delete responseJson.drinks[0][`strIngredient${j}`];
-    }
-      else if (responseJson.drinks[0][`strIngredient${j}`] !== '' ) {
-        drinkIngredients.ingredient = responseJson.drinks[0][`strIngredient${j}`];
-        drinkIngredients.measure = responseJson.drinks[0][`strMeasure${j}`];
-            specifiedIngredients.push(drinkIngredients);
-       } 
-    }
 
-}
-// Build the template for measurements/ingredients
-  let ingredientsTemplate = '';
-  ingredients.forEach(ingredient => {
-    ingredientsTemplate += `
-      <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
-      `;
-  });
-  
-  return ingredientsTemplate;
-}
+///////search by ingredient section/////////
 
-//fetch call for drink containing specified ingredient (only display's drink name and img)
+  //fetch call for drink containing specified ingredient (only display's drink name and img)
 function getCocktailList(boozeInput){
   
   const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
   
-
   fetch(urlSpecified) 
   .then(response => {
     if(response.ok) {
@@ -154,9 +115,7 @@ function getCocktailList(boozeInput){
     }
     throw new Error(response.statusText);
   })  
-  .then(responseJson => displaySearchedCocktail(responseJson)
-    .then(responseJson => getSpecifiedIngredients(responseJson)))
-    
+  .then(responseJson => displaySearchedCocktail(responseJson))
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
@@ -178,7 +137,58 @@ function getRecipeIngredients(idDrink){
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
+
 }
+
+//displays list of cocktails containing specified ingredient, corresponding image, ingredients and instructions
+function displaySearchedCocktail(responseJson){
+    $('.results').empty();
+    
+    for (let i = 0; i < responseJson.drinks.length; i++){
+    const idDrink = responseJson.drinks[i].idDrink;
+    
+      $('.results').append(`
+    <div class="drink-display">
+      <h3>${responseJson.drinks[i].strDrink}</h3>
+      <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
+      <p>${getRecipeIngredients(idDrink)}</p>
+    </div>  
+      `);
+   }
+ 
+}
+
+// generates array of ingredients/measurements for search by ingredient drinks
+function getSpecifiedIngredients(responseJson) {
+  //console.log('getSpecifiedIngredients is working');
+ 
+  let specifiedIngredients = [];
+  for(let i = 0; i < responseJson.drinks.length; i++){
+  for(let j = 1; j < 16; j++) {
+    const drinkIngredients = {};
+    if (responseJson.drinks[i][`strIngredient${j}`] == null || responseJson.drinks[i][`strMeasure${j}`] == null){
+      delete responseJson.drinks[i][`strIngredient${j}`];
+    }
+      else if (responseJson.drinks[i][`strIngredient${j}`] !== '' ) {
+        drinkIngredients.ingredient = responseJson.drinks[i][`strIngredient${j}`];
+        drinkIngredients.measure = responseJson.drinks[i][`strMeasure${j}`];
+            specifiedIngredients.push(drinkIngredients);
+       } 
+    }
+console.log(specifiedIngredients);
+}
+// Build the template for measurements/ingredients
+  let searchedIngredients= '';
+  drinkIngredients.forEach(ingredient => {
+      searchedIngredients += `
+      <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+      `;
+  });
+  
+  return searchedIngredients;
+}
+
+
 
 
 
