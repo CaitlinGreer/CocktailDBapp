@@ -23,7 +23,7 @@ function generateSearchPage(){
   console.log('generate search page is running');
   $('main').html(`<form class="js-form">
         <h2>Search for Drink Recipes By Ingredient</h2>
-        <input type="text" class="booze-input" placeholder="Vodka" required>
+        <input type="text" class="booze-input" placeholder="ex: Vodka" required>
         </br>
         <div class="buttons">
           <input type="submit" class="js-find-drinks" value="Find Drinks!">
@@ -74,20 +74,22 @@ function displayRandomCocktail(responseJson){
       }
     }
 
-// Prints the Ingredients and Measurements
+// finds the Ingredients and Measurements and sets the template for them to be displayed
  function getIngredients(responseJson) {
       let ingredients = [];
+      for (let i = 0; i < responseJson.drinks.length; i++){
       for(let j = 1; j < 16; j++) {
         const ingredientMeasure = {};
-        if (responseJson.drinks[0][`strIngredient${j}`] == null || responseJson.drinks[0][`strMeasure${j}`] == null){
-          delete responseJson.drinks[0][`strIngredient${j}`];
+        if (responseJson.drinks[i][`strIngredient${j}`] == null || responseJson.drinks[i][`strMeasure${j}`] == null){
+          delete responseJson.drinks[i][`strIngredient${j}`];
         }
-          else if (responseJson.drinks[0][`strIngredient${j}`] !== '' ) {
-                ingredientMeasure.ingredient = responseJson.drinks[0][`strIngredient${j}`];
-                ingredientMeasure.measure = responseJson.drinks[0][`strMeasure${j}`];
+          else if (responseJson.drinks[i][`strIngredient${j}`] !== '' ) {
+                ingredientMeasure.ingredient = responseJson.drinks[i][`strIngredient${j}`];
+                ingredientMeasure.measure = responseJson.drinks[i][`strMeasure${j}`];
                 ingredients.push(ingredientMeasure);
            } 
-           
+      }
+           console.log(ingredients)
 }
 // Build the template for measurements/ingredients
       let ingredientsTemplate = '';
@@ -103,7 +105,7 @@ function displayRandomCocktail(responseJson){
 
 ///////search by ingredient section/////////
 
-  //fetch call for drink containing specified ingredient (only display's drink name and img)
+  //fetch call for drink containing specified ingredient (only displays drink name and img and id)
 function getCocktailList(boozeInput){
   
   const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
@@ -122,7 +124,7 @@ function getCocktailList(boozeInput){
 }
 
 //fetch call for lookup a drink by id number to find recipe and ingredients for cocktail search by ingredient
-function getRecipeIngredients(idDrink){
+function getRecipeDetails(idDrink){
   
   const urlDrinkId = baseUrl + 'lookup.php?i=' + idDrink;
 
@@ -151,7 +153,7 @@ function displaySearchedCocktail(responseJson){
     <div class="drink-display">
       <h3>${responseJson.drinks[i].strDrink}</h3>
       <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
-      <p>${getRecipeIngredients(idDrink)}</p>
+      <p>${getRecipeDetails(idDrink)}</p>
     </div>  
       `);
    }
@@ -179,9 +181,9 @@ console.log(specifiedIngredients);
 }  
 // Build the template for measurements/ingredients
   let searchedIngredients= '';
-  drinkIngredients.forEach(ingredient => {
+  drinkIngredients.forEach(drinkIngredients => {
       searchedIngredients += `
-      <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+      <li class="ingredient-list">${drinkIngredients.measure} ${drinkIngredients.ingredient}</li>
       `;
   });
   
@@ -206,7 +208,6 @@ function handleRandomDrinkButton(){
 //handles the find a drink button
 function handleFindDrinkButton(){
   console.log('findDrinkButton is working');
-
     $('.js-form').submit(event => {
       event.preventDefault();
       console.log('find drink recipe clicked');
