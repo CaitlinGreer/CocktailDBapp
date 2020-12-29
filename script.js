@@ -157,7 +157,7 @@ function displaySearchedCocktail(responseJson){
    }
  
 }
-
+//THIS IS A TEST
 // generates array of ingredients/measurements for search by ingredient drinks
 function getSpecifiedIngredients(responseJson) {
   //console.log('getSpecifiedIngredients is working');
