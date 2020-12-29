@@ -141,7 +141,7 @@ function getRecipeDetails(idDrink){
     throw new Error(response.statusText);
   })  
   .then(responseJson => drinkInfo = getSpecifiedIngredients(responseJson))
-  console.log(drinkInfo)
+  
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
   });
