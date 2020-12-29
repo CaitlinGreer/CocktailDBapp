@@ -22,7 +22,7 @@ const baseUrl= "https://www.thecocktaildb.com/api/json/v1/1/";
 function generateSearchPage(){
   console.log('generate search page is running');
   $('main').html(`<form class="js-form">
-        <h2>Search for Drink Recipes By Ingredient</h2>
+        <h2>Search for Drink Recipes By Ingredient or Find a Random Drink</h2>
         <input type="text" class="booze-input" placeholder="Vodka" required>
         </br>
         <div class="buttons">
@@ -30,7 +30,6 @@ function generateSearchPage(){
         </div>
       </form>
       <form class="js-random-form">
-        <h3>Find a Random Drink</h3>
         <div class="buttons">
           <input type="button" id="js-random-button" class="js-random-button" value="Random Drink">
         </div>
@@ -67,12 +66,16 @@ function displayRandomCocktail(responseJson){
     <div class="drink-display">
       <h3>${responseJson.drinks[i].strDrink}</h3>
       <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
-      <p>${responseJson.drinks[i].strInstructions}</p>
-      <p>${getIngredients(responseJson)}</p>
-      </div>  
-      `);
-      }
-    }
+      <button class="show-recipe-button" onclick="handleShowRecipe()">Recipe</button>  
+      <div class="recipe" id="recipe">
+        ${responseJson.drinks[i].strInstructions}
+        </br> </br>
+        ${getIngredients(responseJson)}
+      </div>
+    </div>  
+    `);
+  }
+}
 
 // Prints the Ingredients and Measurements
  function getIngredients(responseJson) {
@@ -86,7 +89,7 @@ function displayRandomCocktail(responseJson){
                 ingredientMeasure.ingredient = responseJson.drinks[0][`strIngredient${j}`];
                 ingredientMeasure.measure = responseJson.drinks[0][`strMeasure${j}`];
                 ingredients.push(ingredientMeasure);
-           } 
+          } 
            
 }
 // Build the template for measurements/ingredients
@@ -96,7 +99,7 @@ function displayRandomCocktail(responseJson){
           <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
           `;
       });
-      
+     
       return ingredientsTemplate;
   }
 
@@ -110,6 +113,7 @@ function getCocktailList(boozeInput){
   
   fetch(urlSpecified) 
   .then(response => {
+    
     if(response.ok) {
       return response.json();
     }
@@ -117,47 +121,61 @@ function getCocktailList(boozeInput){
   })  
   .then(responseJson => displaySearchedCocktail(responseJson))
   .catch(err => {
-    $('.js-error-message').text('Something went wrong');
+    $('.results').text('Something went wrong');
   });
 }
 
 //fetch call for lookup a drink by id number to find recipe and ingredients for cocktail search by ingredient
 function getRecipeIngredients(idDrink){
+  console.log("getRecipeIngredients is working")
   
   const urlDrinkId = baseUrl + 'lookup.php?i=' + idDrink;
+  let recipe = ''
 
   fetch(urlDrinkId)
   .then(response => {
+  
     if(response.ok) {
+      console.log(response.json())
       return response.json();
     }
     throw new Error(response.statusText);
   })  
-  .then(responseJson => getSpecifiedIngredients(responseJson))
+  .then(responseJson => recipe = getSpecifiedIngredients(responseJson))
+  
   .catch(err => {
     $('.js-error-message').text('Something went wrong');
+    console.log(recipe)
+    return recipe;
   });
+  
 
 }
 
-//displays list of cocktails containing specified ingredient, corresponding image, ingredients and instructions
+//displays list of cocktails containing specified ingredient, corresponding image and drink ID number
 function displaySearchedCocktail(responseJson){
     $('.results').empty();
     
+    //console.log(responseJson)
     for (let i = 0; i < responseJson.drinks.length; i++){
     const idDrink = responseJson.drinks[i].idDrink;
     
       $('.results').append(`
     <div class="drink-display">
       <h3>${responseJson.drinks[i].strDrink}</h3>
-      <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
-      <p>${getRecipeIngredients(idDrink)}</p>
+        <img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo">
+        <button class="show-recipe-button" onclick="handleShowRecipe()">Recipe</button>  
+      <div class="recipe" id="recipe">
+        ${responseJson.drinks[i].strInstructions}
+        ${getRecipeIngredients(idDrink)}
+      </div>
     </div>  
       `);
    }
- 
+   
 }
-//THIS IS A TEST
+$('.booze-input').value = '';
+
 // generates array of ingredients/measurements for search by ingredient drinks
 function getSpecifiedIngredients(responseJson) {
   //console.log('getSpecifiedIngredients is working');
@@ -172,20 +190,22 @@ function getSpecifiedIngredients(responseJson) {
       else if (responseJson.drinks[i][`strIngredient${j}`] !== '' ) {
         drinkIngredients.ingredient = responseJson.drinks[i][`strIngredient${j}`];
         drinkIngredients.measure = responseJson.drinks[i][`strMeasure${j}`];
-            specifiedIngredients.push(drinkIngredients);
-       } 
-    }
-console.log(specifiedIngredients);
+        specifiedIngredients.push(drinkIngredients);
+      } 
+  }
+//console.log(specifiedIngredients);
 }
 // Build the template for measurements/ingredients
   let searchedIngredients= '';
-  drinkIngredients.forEach(ingredient => {
+  specifiedIngredients.forEach(ingredient => {
       searchedIngredients += `
-      <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+      <p class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</p>
+    
       `;
   });
-  
+//console.log(searchedIngredients)
   return searchedIngredients;
+  
 }
 
 
@@ -206,14 +226,21 @@ function handleRandomDrinkButton(){
 //handles the find a drink button
 function handleFindDrinkButton(){
   console.log('findDrinkButton is working');
-
+  
     $('.js-form').submit(event => {
       event.preventDefault();
       console.log('find drink recipe clicked');
       const boozeInput = $('.booze-input').val();
-      getCocktailList(boozeInput);
-    })
-  }
+      getCocktailList(boozeInput); 
+    });
+}
+
+//handles show recipe button
+function handleShowRecipe() {
+  console.log('handleShowRecipe was clicked')
+  $(".recipe").slideToggle("slow");
+}
+
 
 // function handleEnterButton(){
 //   console.log('handleEnterButton is working');
