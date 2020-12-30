@@ -5,17 +5,18 @@
 
 header {
     color: hotpink;
-    font-size: px;
-    background: rgba(255, 255, 255, 0.4);
-    margin-top: 20px;
-    
-    padding: 20px;
+    font-size: 40px;
+    font-family: 'Yellowtail', cursive;
+    text-shadow: 2px 2px 8px #ee9ae3;
+    background: rgba(4, 229, 245, 0.164);
+    margin-top: 45px;
+    padding: 0.5px;
 }
 
 body {
-    background-image: url('images/background.jpg');
+    //background-image: url('images/background.jpg');
     background: cover;
-    background-color: gray;
+    background-color: white;
     text-align: center;
     margin: 0 auto;
 }
@@ -27,13 +28,14 @@ body {
     padding: 5px;
 }
 
-h2, h3, p, .js-form {
-    color: white;
+h2, h3, p, .js-form, .drink-display {
+    color: black;
     
 }
 
 h2 {
-    margin-top: 65px;
+    margin: 65px 10px;
+
 }
 .buttons, .js-form{
     display: flex;
@@ -53,23 +55,34 @@ h2 {
 
 /*drink search results*/
 
-.drink-display{
+/* .drink-display{
     display: flex;
     flex-direction: column;
-    color: white;
-    margin-bottom: 5%;
     max-width: 100%;
+    margin: 5% 7% 5% 7%;
     height: auto;
-}
+} */
 
 img {
-    max-width: 70%;
+    max-width: 100%;
     height: auto;
     border-radius: 5px;
+    
     
 
 }
 
+.drink-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.drink-container .drink-display{
+    flex: 1;
+    padding: 10px;
+}
 .hidden {
     display: none;
 }
@@ -80,18 +93,26 @@ img {
 
 .recipe {
     display: none;
-    background:rgba(255, 255, 255, 0.4);
+    background: rgba(4, 229, 245, 0.164);
+    border-radius: 5px;
 }
 
 
 @media (min-width: 600px) {
-    .drink-display{
+
+    header {
+        font-size: 55px;
+
+    }
+    
+    .drink-container{
         display: flex;
         flex-direction: column;
     }
 
-    .drink-display img {
+    img {
         max-width: 100%;
         height: auto;
+        margin: 5%;
     }
 }
