@@ -51,16 +51,20 @@ function displayRandomCocktail(responseJson) {
       <div class="drink-display-container">
         <h3>${responseJson.drinks[i].strDrink}</h3>
         <div class="drink-img"><img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo"></div>
-            <button class="show-recipe-button" onclick="handleShowRecipe()">Recipe</button>  
+            <div class="recipe-toggle">Recipe
               <div class="recipe" id="recipe">
-                 ${responseJson.drinks[i].strInstructions}
-                 </br> </br>
+                </br> 
+                ${responseJson.drinks[i].strInstructions} 
+                </br> 
+                </br>
                   ${getIngredients(responseJson)}
               </div>
+            </div>  
       </div>
     </div>  
     `);
     }
+    handleShowRecipe();
 }
 
 
@@ -95,7 +99,7 @@ async function getCocktailList(boozeInput) {
 
     const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
     const response = await fetch(urlSpecified);
-
+    
     if (!response.ok) {
         const message = `Something Went Wrong`;
         throw new Error(message);
@@ -104,15 +108,15 @@ async function getCocktailList(boozeInput) {
     const cocktails = await response.json();
     return displaySearchedCocktail(cocktails);
 }
+
 getCocktailList().catch(error => {
     error.message;
-
+   
 });
 
 
 //fetch call for lookup a drink by id number to find recipe and ingredients for cocktail search by ingredient
 async function getRecipeIngredients(idDrink) {
-    console.log("getRecipeIngredients is working")
 
     const urlDrinkId = baseUrl + 'lookup.php?i=' + idDrink;
     const response = await fetch(urlDrinkId);
@@ -136,8 +140,7 @@ getCocktailList().catch(error => {
 async function displaySearchedCocktail(responseJson) {
     $('.results').empty();
 
-
-    for (let i = 0; i < responseJson.drinks.length; i++) {
+     for (let i = 0; i < responseJson.drinks.length; i++) {
         const idDrink = responseJson.drinks[i].idDrink;
         const ingredients = await getRecipeIngredients(idDrink);
         $('.results').append(`
@@ -145,15 +148,19 @@ async function displaySearchedCocktail(responseJson) {
         <div class="drink-display-container">  
           <h3>${responseJson.drinks[i].strDrink}</h3>
             <div class="drink-img"><img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo"></div>
-              <button class="recipe-button" id="recipe-button" onclick="handleShowRecipe()">Recipe</button>  
+            <div class="recipe-toggle">Recipe 
                 <div class="recipe" id="recipe">
+                  </br>
                   ${getSpecifiedIngredients(ingredients)} 
                 </div>
+            </div>
         </div>  
       </div>
       
     `);
+    
     }
+    handleShowRecipe();
 }
 
 
@@ -183,7 +190,7 @@ function getSpecifiedIngredients(responseJson) {
         `;
     });
 
-    finalDisplay = instructions + searchedIngredients;
+    finalDisplay = instructions + `</br></br>` + searchedIngredients;
 
     return finalDisplay;
 
@@ -198,28 +205,33 @@ function getSpecifiedIngredients(responseJson) {
 function handleRandomDrinkButton() {
 
     $('.js-random-button').on('click', event => {
-        console.log('random drink button clicked')
-        getRandomCocktail();
+      getRandomCocktail();
+      
     })
 }
 
 //handles the find a drink button
 function handleFindDrinkButton() {
-
-
-    $('.js-form').submit(event => {
-        event.preventDefault();
-        console.log('find drink recipe clicked');
-        const boozeInput = $('.booze-input').val();
-        getCocktailList(boozeInput);
+  
+  $('.js-form').submit(event => {
+    event.preventDefault();
+    const boozeInput = $('.booze-input').val();
+    getCocktailList(boozeInput);
+    
     });
+    
 }
 
 //handles show recipe button
 function handleShowRecipe() {
-
-    $(".recipe").slideToggle("slow");
+  $('.recipe-toggle').click(function(){
+    $(this).children().toggle('slow');
+  });  
+  $('.recipe').click(function ( event ) {
+    event.stopPropagation();
+  });
 }
+
 
 
 
@@ -227,6 +239,7 @@ function handleCocktailApp() {
     generateSearchPage();
     handleRandomDrinkButton();
     handleFindDrinkButton();
+    
 }
 
 handleCocktailApp();

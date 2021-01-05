@@ -9,15 +9,20 @@ header {
     font-family: 'Yellowtail', cursive;
     text-shadow: 2px 2px 8px #ee9ae3;
     background: rgba(4, 229, 245, 0.164);
-    margin-top: 45px;
-    padding: 0.5px;
+    margin-top: 35px;
+    padding: 0.1px;
 }
+
 
 body {
     background-color: white;
     text-align: center;
     margin: 0 auto;
     font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+    font-size: 20px;
 }
 /* search form */
 .js-form {
@@ -29,16 +34,37 @@ body {
 .js-random-form {
     margin-bottom: 20px;
 }
+
+.booze-input {
+    border: 2px solid rgba(4, 229, 245, 1) ;
+    border-radius: 5px;
+    padding: 4px;
+    font-family: 'Montserrat', sans-serif;
+    color: hotpink;
+}
+
 /* find drinks and random drinks buttons */
 
 .js-find-drinks,
-.js-random-button {
+.js-random-button  {
+    display: inline-block;
     background: transparent;
     border-radius: 5px;
     border-color: hotpink;
     font-family: 'Montserrat', sans-serif;
     font-weight: bolder;
-    
+    font-size: 14px;
+    width: 200px;
+}
+
+.recipe-toggle {
+    border: 2px solid hotpink;
+    background-color: rgba(238,154,227,0.3);
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 18px;
 }
 
 
@@ -56,10 +82,12 @@ body {
 }
 
 #drink-display-card {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    margin-left: 15px;
+    margin-right: 15px;
     border-radius: 5px;
-    background:rgba(4, 229, 245, 0.164);
-    box-shadow: 0 4px 10px 0 rgba(238,154,227,0.3);
+    border: 2px solid hotpink;
+    box-shadow: 0px 4px 4px 4px rgba(238,154,227,0.3);
     transition: 0.3s;
     max-width: 450px;
     height: auto;
@@ -67,7 +95,7 @@ body {
 
   /* On mouse-over, add a deeper shadow */
 #drink-display-card:hover {
-    box-shadow: 0 8px 20px 0 rgba(238,154,227,0.4);
+    box-shadow: 0 8px 8px 8px rgba(238,154,227,0.4);
   }
   
   /* Add some padding inside the card container */
@@ -78,16 +106,15 @@ body {
   }
 
   .recipe {
-     display: none;
-     vertical-align: middle;
-     background: transparent;
+    display: none;
+    vertical-align: middle;
+    text-align: justify;
+    font-size: 15px;
+    padding: 5px;
 
-  }
+ }
 
-  #recipe-button {
-      margin-bottom: 2px;
 
-  }
   /* */
   
 
