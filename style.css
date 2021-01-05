@@ -1,11 +1,101 @@
-.drink-display{
-    display: flex;
-    flex-direction: column;
+* {
+    box-sizing: border-box;
+}
+/*changes commited*/
+
+header {
+    color: hotpink;
+    font-size: 40px;
+    font-family: 'Yellowtail', cursive;
+    text-shadow: 2px 2px 8px #ee9ae3;
+    background: rgba(4, 229, 245, 0.164);
+    margin-top: 45px;
+    padding: 0.5px;
 }
 
-.drink-display img {
+body {
+    background-color: white;
+    text-align: center;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+}
+/* search form */
+.js-form {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 60px 5px;
+}
+
+.js-random-form {
+    margin-bottom: 20px;
+}
+/* find drinks and random drinks buttons */
+
+.js-find-drinks,
+.js-random-button {
+    background: transparent;
+    border-radius: 5px;
+    border-color: hotpink;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+    
+}
+
+
+
+/* flex box for search drink and random drink buttons*/
+
+
+
+/*drink search results*/
+.results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    
+}
+
+#drink-display-card {
+    margin-bottom: 15px;
+    border-radius: 5px;
+    background:rgba(4, 229, 245, 0.164);
+    box-shadow: 0 4px 10px 0 rgba(238,154,227,0.3);
+    transition: 0.3s;
+    max-width: 450px;
+    height: auto;
+  }
+
+  /* On mouse-over, add a deeper shadow */
+#drink-display-card:hover {
+    box-shadow: 0 8px 20px 0 rgba(238,154,227,0.4);
+  }
+  
+  /* Add some padding inside the card container */
+.drink-display-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2px 16px;
+  }
+
+  .recipe {
+     display: none;
+     vertical-align: middle;
+     background: transparent;
+
+  }
+
+  #recipe-button {
+      margin-bottom: 2px;
+
+  }
+  /* */
+  
+
+img {
     max-width: 100%;
     height: auto;
+    border-radius: 5px;
+
 }
 
 .hidden {
@@ -19,5 +109,20 @@
 
 
 @media (min-width: 600px) {
+
+header {
+        font-size: 55px;
+    }
+
+.results {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#drink-display-card {
+    display: flex;
+    max-width: 300px;
+}
+
 
 }
