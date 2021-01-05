@@ -5,17 +5,23 @@ const baseUrl = "https://www.thecocktaildb.com/api/json/v1/1/";
 
 //generate search page
 <<<<<<< HEAD
+<<<<<<< HEAD
 function generateSearchPage(){
   console.log('generate search page is running');
   $('main').html(`<form class="js-form">
         <h2>Search for Drink Recipes By Ingredient</h2>
         <input type="text" class="booze-input" placeholder="ex: Vodka" required>
 =======
+=======
+>>>>>>> a7d94ef5e5856861e46bedb5e10aaaa2f3d3d642
 function generateSearchPage() {
     $('main').html(`<form class="js-form">
         <h2>Search for Drink Recipes By Ingredient </br> or Find a Random Drink</h2>
         <input type="text" class="booze-input" placeholder="Vodka" required>
+<<<<<<< HEAD
 >>>>>>> secondAttempt
+=======
+>>>>>>> a7d94ef5e5856861e46bedb5e10aaaa2f3d3d642
         </br>
         <div class="buttons">
           <input type="submit" class="js-find-drinks" value="Find Drinks!">
@@ -31,6 +37,7 @@ function generateSearchPage() {
 
 ////////random cocktail section////////
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 //fetch call for the url for random cocktail search
@@ -38,6 +45,8 @@ function getRandomCocktail(){
   const urlRandom = baseUrl + 'random.php'
 =======
 >>>>>>> secondAttempt
+=======
+>>>>>>> a7d94ef5e5856861e46bedb5e10aaaa2f3d3d642
 
 
 //fetch call for the url for random cocktail search
@@ -80,6 +89,7 @@ function displayRandomCocktail(responseJson) {
 }
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // finds the Ingredients and Measurements and sets the template for them to be displayed
  function getIngredients(responseJson) {
@@ -207,6 +217,8 @@ function getSpecifiedIngredients(responseJson) {
   //console.log(searchedIngredients)
   return searchedIngredients;
 =======
+=======
+>>>>>>> a7d94ef5e5856861e46bedb5e10aaaa2f3d3d642
 // Prints the Ingredients and Measurements
 function getIngredients(responseJson) {
     let ingredients = [];
@@ -330,6 +342,7 @@ function getSpecifiedIngredients(responseJson) {
 
     return finalDisplay;
 
+<<<<<<< HEAD
 >>>>>>> secondAttempt
 }
 
@@ -340,6 +353,13 @@ function getSpecifiedIngredients(responseJson) {
 
 =======
 >>>>>>> secondAttempt
+=======
+}
+
+
+
+
+>>>>>>> a7d94ef5e5856861e46bedb5e10aaaa2f3d3d642
 ///////handlers/////
 
 //handles the random drink button
@@ -353,6 +373,7 @@ function handleRandomDrinkButton() {
 
 //handles the find a drink button
 <<<<<<< HEAD
+<<<<<<< HEAD
 function handleFindDrinkButton(){
   console.log('findDrinkButton is working');
 =======
@@ -360,6 +381,11 @@ function handleFindDrinkButton() {
 
 
 >>>>>>> secondAttempt
+=======
+function handleFindDrinkButton() {
+
+
+>>>>>>> a7d94ef5e5856861e46bedb5e10aaaa2f3d3d642
     $('.js-form').submit(event => {
         event.preventDefault();
         console.log('find drink recipe clicked');
