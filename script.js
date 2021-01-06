@@ -102,6 +102,7 @@ async function getCocktailList(boozeInput) {
     
     if (!response.ok) {
         const message = `Something Went Wrong`;
+        console.log(message);
         throw new Error(message);
     }
 
@@ -127,6 +128,7 @@ async function getRecipeIngredients(idDrink) {
     }
 
     const ingredients = await response.json();
+    console.log(response)
     return ingredients;
 }
 getCocktailList().catch(error => {
@@ -171,8 +173,9 @@ function getSpecifiedIngredients(responseJson) {
     for (let i = 0; i < responseJson.drinks.length; i++) {
         for (let j = 1; j < 16; j++) {
             const drinkIngredients = {};
-            if (responseJson.drinks[i][`strIngredient${j}`] == null || responseJson.drinks[i][`strMeasure${j}`] == null) {
+            if (responseJson.drinks[i][`strIngredient${j}`] == null)  {
                 delete responseJson.drinks[i][`strIngredient${j}`];
+                
             } else if (responseJson.drinks[i][`strIngredient${j}`] !== '') {
                 drinkIngredients.ingredient = responseJson.drinks[i][`strIngredient${j}`];
                 drinkIngredients.measure = responseJson.drinks[i][`strMeasure${j}`];
