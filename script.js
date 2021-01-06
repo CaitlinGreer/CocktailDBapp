@@ -6,8 +6,8 @@ const baseUrl = "https://www.thecocktaildb.com/api/json/v1/1/";
 //generate search page
 function generateSearchPage() {
     $('main').html(`<form class="js-form">
-        <h2>Search for Drink Recipes By Ingredient </br> or Find a Random Drink</h2>
-        <input type="text" class="booze-input" placeholder="Vodka" required>
+        <h2>Search for Drink Recipes By Alcohol </br> or Find a Random Drink</h2>
+        <input type="text" class="booze-input" placeholder="What kind of alcohol?" required>
         </br>
         <div class="buttons">
           <input type="submit" class="js-find-drinks" value="Find Drinks!">
@@ -102,11 +102,14 @@ async function getCocktailList(boozeInput) {
     
     if (!response.ok) {
         const message = `Something Went Wrong`;
-        console.log(message);
         throw new Error(message);
     }
-
-    const cocktails = await response.json();
+    let cocktails = null;
+    try {
+      cocktails = await response.json();
+    } catch(e) {
+      throw new Error(`no content`);
+    }
     return displaySearchedCocktail(cocktails);
 }
 
@@ -128,7 +131,6 @@ async function getRecipeIngredients(idDrink) {
     }
 
     const ingredients = await response.json();
-    console.log(response)
     return ingredients;
 }
 getCocktailList().catch(error => {
@@ -141,7 +143,8 @@ getCocktailList().catch(error => {
 
 async function displaySearchedCocktail(responseJson) {
     $('.results').empty();
-
+    $('.js-form')[0].reset();
+    
      for (let i = 0; i < responseJson.drinks.length; i++) {
         const idDrink = responseJson.drinks[i].idDrink;
         const ingredients = await getRecipeIngredients(idDrink);
@@ -174,7 +177,7 @@ function getSpecifiedIngredients(responseJson) {
         for (let j = 1; j < 16; j++) {
             const drinkIngredients = {};
             if (responseJson.drinks[i][`strIngredient${j}`] == null)  {
-                delete responseJson.drinks[i][`strIngredient${j}`];
+                delete responseJson.drinks[i][`strMeasure${j}`];
                 
             } else if (responseJson.drinks[i][`strIngredient${j}`] !== '') {
                 drinkIngredients.ingredient = responseJson.drinks[i][`strIngredient${j}`];

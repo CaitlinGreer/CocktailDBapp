@@ -4,15 +4,18 @@
 /*changes commited*/
 
 header {
-    color: hotpink;
-    font-size: 40px;
-    font-family: 'Yellowtail', cursive;
-    text-shadow: 2px 2px 8px #ee9ae3;
     background: rgba(4, 229, 245, 0.164);
-    margin-top: 35px;
-    padding: 0.1px;
+    margin-top: 10px;
 }
 
+h1 {
+    color: hotpink;
+    font-size: 60px;
+    font-family: 'Yellowtail', cursive;
+    text-shadow: 2px 2px 8px #ee9ae3;
+    padding: 10px;
+    
+}
 
 body {
     background-color: white;
@@ -22,13 +25,15 @@ body {
 }
 
 h2 {
+    color: #04859c;
     font-size: 20px;
 }
+
 /* search form */
 .js-form {
     display: flex;
     flex-direction: column;
-    margin: 0px 60px 5px;
+    margin: 40px 60px 5px;
 }
 
 .js-random-form {
@@ -40,9 +45,12 @@ h2 {
     border-radius: 5px;
     padding: 4px;
     font-family: 'Montserrat', sans-serif;
-    color: hotpink;
+    color: rgb(221, 56, 139);
 }
 
+::placeholder {
+    color: rgba(211, 212, 212, 0.808);
+}
 /* find drinks and random drinks buttons */
 
 .js-find-drinks,
@@ -78,6 +86,7 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    align-items: flex-start;
     
 }
 
@@ -116,7 +125,10 @@ h2 {
 
 
   /* */
-  
+
+header {
+    margin: -30px;
+}
 
 img {
     max-width: 100%;
@@ -137,9 +149,14 @@ img {
 
 @media (min-width: 600px) {
 
-header {
-        font-size: 55px;
-    }
+
+h1 {
+    font-size: 95px;
+}
+
+h2 {
+    font-size: 30px;
+}
 
 .results {
     display: flex;
@@ -151,5 +168,10 @@ header {
     max-width: 300px;
 }
 
+.js-find-drinks,
+.js-random-button{
+    width: 400px;
+    font-size: 17px;
+}
 
 }
