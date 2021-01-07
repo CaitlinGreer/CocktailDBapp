@@ -202,18 +202,14 @@ function getSpecifiedIngredients(responseJson) {
 
 }
 
-
-
-
 ///////handlers/////
 
 //handles the random drink button
 function handleRandomDrinkButton() {
 
-    $('.js-random-button').on('click', event => {
-      getRandomCocktail();
-      
-    })
+  $('.js-random-button').on('click', event => {
+    getRandomCocktail();
+  })
 }
 
 //handles the find a drink button
@@ -223,9 +219,7 @@ function handleFindDrinkButton() {
     event.preventDefault();
     const boozeInput = $('.booze-input').val();
     getCocktailList(boozeInput);
-    
-    });
-    
+  });
 }
 
 //handles show recipe button
@@ -239,13 +233,10 @@ function handleShowRecipe() {
 }
 
 
-
-
 function handleCocktailApp() {
     generateSearchPage();
     handleRandomDrinkButton();
     handleFindDrinkButton();
-    
 }
 
 handleCocktailApp();
