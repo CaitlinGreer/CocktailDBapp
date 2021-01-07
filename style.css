@@ -1,31 +1,48 @@
 * {
     box-sizing: border-box;
 }
-/*changes commited*/
+
 
 header {
-    background: rgba(4, 229, 245, 0.164);
-    margin-top: 10px;
+    background:rgba(22, 22, 22, 0.7);
+    margin-top: -25px;
 }
 
 h1 {
-    color: hotpink;
+    color: rgb(221, 56, 139);
     font-size: 60px;
     font-family: 'Yellowtail', cursive;
-    text-shadow: 2px 2px 8px #ee9ae3;
+    /* text-shadow: 2px 2px 8px #ee9ae3; */
     padding: 10px;
-    
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #ee9ae3, 0 0 20px#ee9ae3, 0 0 25px #ee9ae3, 0 0 30px #ee9ae3, 0 0 35px #ee9ae3;
+  }
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ee9ae3, 0 0 40px #ee9ae3, 0 0 50px #ee9ae3, 0 0 60px #ee9ae3, 0 0 70px #ee9ae3;
+  }
 }
 
 body {
-    background-color: white;
+    background-image: url(images/background.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-color: rgb(22, 22, 22);
     text-align: center;
     margin: 0 auto;
     font-family: 'Montserrat', sans-serif;
+    color: white;
 }
 
 h2 {
-    color: #04859c;
+    color: rgba(4, 229, 245, 1);
+    font-size: 20px;
+}
+
+h3 {
     font-size: 20px;
 }
 
@@ -37,16 +54,17 @@ h2 {
 }
 
 .js-random-form {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .booze-input {
-    border: 2px solid rgba(4, 229, 245, 1) ;
+    border: 2px solid rgba(4, 229, 245, 1);
+    background: rgba(4, 229, 245, 0.281);
     border-radius: 5px;
     padding: 4px;
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    color: rgb(221, 56, 139);
+    color: white;
 }
 
 ::placeholder {
@@ -57,14 +75,17 @@ h2 {
 .js-find-drinks,
 .js-random-button  {
     
-    background: transparent;
+    background:  rgba(238,154,227,0.2);
     border-radius: 5px;
     border-color: hotpink;
     font-family: 'Montserrat', sans-serif;
+    color: white;
     font-weight: bolder;
     font-size: 14px;
     width: 200px;
 }
+
+/*style of recipe when toggled*/
 
 .recipe-toggle {
     border: 2px solid hotpink;
@@ -75,11 +96,6 @@ h2 {
     margin-bottom: 5px;
     font-size: 18px;
 }
-
-
-
-/* flex box for search drink and random drink buttons*/
-
 
 
 /*drink search results*/
@@ -99,7 +115,7 @@ h2 {
     border: 2px solid hotpink;
     box-shadow: 0px 4px 4px 4px rgba(238,154,227,0.3);
     transition: 0.3s;
-    max-width: 450px;
+    max-width: 300px;
     height: auto;
   }
 
@@ -124,12 +140,6 @@ h2 {
 
  }
 
-
-  /* */
-
-header {
-    margin: -30px;
-}
 
 img {
     max-width: 100%;
@@ -166,7 +176,7 @@ h2 {
 
 #drink-display-card {
     display: flex;
-    max-width: 300px;
+    max-width: 350px;
 }
 
 .js-find-drinks,
