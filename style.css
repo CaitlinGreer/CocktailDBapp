@@ -45,17 +45,18 @@ h2 {
     border-radius: 5px;
     padding: 4px;
     font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
     color: rgb(221, 56, 139);
 }
 
 ::placeholder {
-    color: rgba(211, 212, 212, 0.808);
+    color: rgba(211, 212, 212, 1);
 }
 /* find drinks and random drinks buttons */
 
 .js-find-drinks,
 .js-random-button  {
-    display: inline-block;
+    
     background: transparent;
     border-radius: 5px;
     border-color: hotpink;
