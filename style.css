@@ -157,7 +157,7 @@ img {
     list-style-type: none;
 }
 
-
+/* styles for when larger than 600px*/
 
 @media (min-width: 600px) {
 
@@ -177,7 +177,7 @@ h2 {
 
 #drink-display-card {
     display: flex;
-    max-width: 350px;
+    max-width: 300px;
 }
 
 .js-find-drinks,
