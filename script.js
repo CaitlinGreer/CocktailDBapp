@@ -5,17 +5,18 @@ const baseUrl = "https://www.thecocktaildb.com/api/json/v1/1/";
 
 //generate search page
 function generateSearchPage() {
-    $('main').html(`<form class="js-form">
-        <h2>Search for Drink Recipes By Alcohol </br> or Find a Random Drink</h2>
-        <input type="text" class="booze-input" placeholder="What kind of alcohol?" required>
-        </br>
-        <div class="buttons">
-          <input type="submit" class="js-find-drinks" value="Find Drinks!">
-        </div>
+    $('main').html(
+      `<form class="js-form">
+            <h2>Search for Drink Recipes By Alcohol </br> or Find a Random Drink</h2>
+              <input type="text" class="booze-input" placeholder="What kind of alcohol?" required>
+              </br>
+                <div class="buttons">
+                  <input type="submit" class="js-find-drinks" value="Find Drinks!"                        
+                </div>
       </form>
       <form class="js-random-form">
         <div class="buttons">
-         <input type="button" id="js-random-button" class="js-random-button" value="Random Drink">
+          <input type="button" id="js-random-button" class="js-random-button" value="Random Drink">
         </div>
       </form>
     </section>`);
@@ -47,21 +48,22 @@ function displayRandomCocktail(responseJson) {
 
     for (let i = 0; i < responseJson.drinks.length; i++) {
         $('.results').append(`
-    <div class="drink-display-card" id="drink-display-card">
-      <div class="drink-display-container">
+    <section class="drink-display-card" id="drink-display-card">
+      <article class="drink-display-container">
         <h3>${responseJson.drinks[i].strDrink}</h3>
         <div class="drink-img"><img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo"></div>
             <div class="recipe-toggle">Recipe
               <div class="recipe" id="recipe">
                 </br> 
-                ${responseJson.drinks[i].strInstructions} 
+                  <div class="instructions">${responseJson.drinks[i].strInstructions}
+                  </div>
                 </br> 
                 </br>
                   ${getIngredients(responseJson)}
               </div>
             </div>  
-      </div>
-    </div>  
+      </article>
+    </section>  
     `);
     }
     handleShowRecipe();
@@ -98,7 +100,7 @@ function getIngredients(responseJson) {
 
 //fetch call for drink containing specified ingredient (only display's drink name and img)
 async function getCocktailList(boozeInput) {
-
+    
     const urlSpecified = baseUrl + 'filter.php?i=' + boozeInput;
     const response = await fetch(urlSpecified);
     
@@ -108,22 +110,22 @@ async function getCocktailList(boozeInput) {
     }
     let cocktails = null;
     try {
-      cocktails = await response.json();
+       cocktails = await response.json();
     } catch(e) {
-      throw new Error(`no content`);
+      $('#error').removeClass('hidden')
+      $('.js-form')[0].reset()
+      throw new Error(`no content`)
     }
+
+
     return displaySearchedCocktail(cocktails);
 }
 
-getCocktailList().catch(error => {
-    error.message;
-   
-});
+
 
 
 //fetch call for lookup a drink by id number to find recipe and ingredients for cocktail search by ingredient
 async function getRecipeIngredients(idDrink) {
-
     const urlDrinkId = baseUrl + 'lookup.php?i=' + idDrink;
     const response = await fetch(urlDrinkId);
 
@@ -133,12 +135,12 @@ async function getRecipeIngredients(idDrink) {
     }
 
     const ingredients = await response.json();
-    return ingredients;
-}
-getCocktailList().catch(error => {
-    error.message;
 
-});
+    
+    return ingredients;
+
+}
+
 
 
 //displays list of cocktails containing specified ingredient, corresponding image and drink ID number
@@ -146,13 +148,18 @@ getCocktailList().catch(error => {
 async function displaySearchedCocktail(responseJson) {
     $('.results').empty();
     $('.js-form')[0].reset();
+    $('.results').hide();
+    $('#error').addClass('hidden');
+    $('#loading').show();
     
      for (let i = 0; i < responseJson.drinks.length; i++) {
         const idDrink = responseJson.drinks[i].idDrink;
         const ingredients = await getRecipeIngredients(idDrink);
+        console.log
         $('.results').append(`
-      <div class="drink-display-card" id="drink-display-card">
-        <div class="drink-display-container">  
+     
+       <section class="drink-display-card" id="drink-display-card">
+        <article class="drink-display-container">  
           <h3>${responseJson.drinks[i].strDrink}</h3>
             <div class="drink-img"><img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo"></div>
             <div class="recipe-toggle">Recipe 
@@ -161,12 +168,15 @@ async function displaySearchedCocktail(responseJson) {
                   ${getSpecifiedIngredients(ingredients)} 
                 </div>
             </div>
-        </div>  
-      </div>
+        </article>  
+      </section>
       
     `);
     
     }
+    $('#loading').hide();
+    $('.results').show();
+    
     handleShowRecipe();
 }
 
@@ -222,6 +232,7 @@ function handleFindDrinkButton() {
   $('.js-form').submit(event => {
     event.preventDefault();
     const boozeInput = $('.booze-input').val();
+
     getCocktailList(boozeInput);
   });
 }
@@ -237,7 +248,9 @@ function handleShowRecipe() {
 }
 
 
+
 function handleCocktailApp() {
+    $('#loading').hide();
     generateSearchPage();
     handleRandomDrinkButton();
     handleFindDrinkButton();
