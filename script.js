@@ -11,7 +11,7 @@ function generateSearchPage() {
               <input type="text" class="booze-input" placeholder="What kind of alcohol?" required>
               </br>
                 <div class="buttons">
-                  <input type="submit" class="js-find-drinks" value="Find Drinks!"                        
+                  <input type="submit" class="js-find-drinks" value="Find Drinks!">                        
                 </div>
       </form>
       <form class="js-random-form">
