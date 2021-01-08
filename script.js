@@ -15,7 +15,7 @@ function generateSearchPage() {
       </form>
       <form class="js-random-form">
         <div class="buttons">
-          <input type="button" id="js-random-button" class="js-random-button" value="Random Drink">
+         <input type="button" id="js-random-button" class="js-random-button" value="Random Drink">
         </div>
       </form>
     </section>`);
@@ -37,7 +37,7 @@ function getRandomCocktail() {
         })
         .then(responseJson => displayRandomCocktail(responseJson))
         .catch(err => {
-            $('.js-error-message').text('Something went wrong');
+            $('.results').text('Something went wrong');
         });
 }
 
@@ -85,7 +85,9 @@ function getIngredients(responseJson) {
     let ingredientsTemplate = '';
     ingredients.forEach(ingredient => {
         ingredientsTemplate += `
+        <ul>
         <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+        </ul>
         `;
     });
     return ingredientsTemplate;
@@ -192,7 +194,9 @@ function getSpecifiedIngredients(responseJson) {
     let searchedIngredients = '';
     specifiedIngredients.forEach(ingredient => {
         searchedIngredients += `
+      <ul>
       <li class="ingredient-list">${ingredient.measure} ${ingredient.ingredient}</li>
+      </ul>
         `;
     });
 
@@ -239,4 +243,4 @@ function handleCocktailApp() {
     handleFindDrinkButton();
 }
 
-handleCocktailApp();
+$(handleCocktailApp());
