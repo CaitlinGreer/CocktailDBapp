@@ -48,12 +48,12 @@ function displayRandomCocktail(responseJson) {
 
     for (let i = 0; i < responseJson.drinks.length; i++) {
         $('.results').append(`
-    <section class="drink-display-card" id="drink-display-card">
+    <section class="drink-display-card">
       <article class="drink-display-container">
         <h3>${responseJson.drinks[i].strDrink}</h3>
         <div class="drink-img"><img src="${responseJson.drinks[i].strDrinkThumb}" alt="drink photo"></div>
             <div class="recipe-toggle">Recipe
-              <div class="recipe" id="recipe">
+              <div class="recipe">
                 </br> 
                   <div class="instructions">${responseJson.drinks[i].strInstructions}
                   </div>

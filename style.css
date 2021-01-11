@@ -114,7 +114,7 @@ ul {
     
 }
 
-#drink-display-card {
+.drink-display-card {
     margin-bottom: 18px;
     margin-left: 15px;
     margin-right: 15px;
@@ -127,7 +127,7 @@ ul {
   }
 
   /* On mouse-over, add a deeper shadow */
-#drink-display-card:hover {
+.drink-display-card:hover {
     box-shadow: 0 8px 8px 8px rgba(238,154,227,0.4);
   }
   
